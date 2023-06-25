@@ -10,7 +10,7 @@ Fifth project of [this challenge](https://github.com/Rekuiem84/personal-challeng
 
 CSS :
 
-- **cos()** and **sinus()** functions coupled with custom properties
+- **cos()** and **sin()** functions coupled with custom properties
 
 JS :
 
