@@ -14,7 +14,7 @@ body {
 .navigation {
 	position: relative;
 	top: 300px;
-	left: 200px;
+	left: 250px;
 	width: fit-content;
 	--burger-width: 50px;
 }
@@ -28,6 +28,7 @@ body {
 	position: relative;
 	z-index: 10;
 	border-radius: 8px;
+	/* border: 3px solid red; */
 }
 .burger-cont:focus-visible {
 	outline: none;
@@ -81,54 +82,101 @@ body {
 	rotate: -45deg;
 }
 /* Nav items */
+.nav__item-cont {
+	--item-count: 8;
+	--item-spacing: calc(var(--item-count) / 2);
+	--animation-duration: 60s;
+	width: 1px;
+	height: 1px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	translate: -50% -50%;
+	animation: rotation var(--animation-duration) linear infinite;
+}
 .nav__item {
-	--item-width: 80px;
-	--size-diff: calc(var(--item-width) - var(--burger-width));
-	--distance: 150px;
-	border: 3px solid lightseagreen;
+	--item-width: 100px;
+	--distance: 180px;
 	width: var(--item-width);
 	aspect-ratio: 1;
-	border-radius: 50%;
-	outline: none;
-	transition: border-radius 0.2s;
 	display: grid;
 	place-items: center;
-	position: absolute;
-	top: 0;
-	left: 0;
 	transform-origin: center;
+	border-radius: 50%;
 	/* Initial position */
-	translate: calc((var(--size-diff) * -0.5)) calc((var(--size-diff) * -0.5));
-	/* Rotation */
-	transform: translateX(calc((cos(var(--rotation)) * var(--distance)) * -1))
-		translateY(calc((sin(var(--rotation)) * var(--distance)) * -1));
-	--angle: 3.1415;
-	--rotation: var(--base-rotation) + var(--angle);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	/* Position on circle */
+	translate: calc(var(--distance) * cos(var(--base-rotation)))
+		calc(var(--distance) * sin(var(--base-rotation)));
 }
-.nav__item:is(:hover, :focus-visible) {
+.nav__item a {
+	position: relative;
+	background-color: inherit;
+	text-decoration: none;
+	display: grid;
+	place-items: center;
+	width: 100%;
+	height: 100%;
+	outline: none;
+	transition: border-radius 0.2s ease;
+	border-radius: 50%;
+	animation: rotation var(--animation-duration) linear reverse infinite;
+}
+.nav__item a:is(:hover, :focus-visible) {
 	border-radius: 30%;
 }
+/* Stop the animation when items are hovered or focused */
+.nav__item-cont:has(.nav__item a:hover),
+.nav__item-cont:focus-within,
+.nav__item-cont:has(.nav__item a:hover) a,
+.nav__item-cont:focus-within a {
+	animation-play-state: paused;
+}
+/* Removes the rotation animation if the user has reduced-motion activated (accessibility setting)*/
+@media (prefers-reduced-motion: reduce) {
+	.nav__item-cont,
+	.nav__item a {
+		animation: none;
+	}
+}
+/* to do: remove backgrounds */
 .nav__item:nth-of-type(1) {
 	--base-rotation: 0;
+	background-color: hsl(240, 100%, 12.5%);
 }
 .nav__item:nth-of-type(2) {
-	--base-rotation: -1 * pi / 4;
+	--base-rotation: (pi / var(--item-spacing)) * 1;
+	background-color: hsl(240, 100%, 25%);
 }
 .nav__item:nth-of-type(3) {
-	--base-rotation: -2 * pi / 4;
+	--base-rotation: (pi / var(--item-spacing)) * 2;
+	background-color: hsl(240, 100%, 37.5%);
 }
 .nav__item:nth-of-type(4) {
-	--base-rotation: -3 * pi / 4;
+	--base-rotation: (pi / var(--item-spacing)) * 3;
+	background-color: hsl(240, 100%, 50%);
 }
 .nav__item:nth-of-type(5) {
-	--base-rotation: -4 * pi / 4;
+	--base-rotation: (pi / var(--item-spacing)) * 4;
+	background-color: hsl(240, 100%, 62.5%);
 }
 .nav__item:nth-of-type(6) {
-	--base-rotation: -5 * pi / 4;
+	--base-rotation: (pi / var(--item-spacing)) * 5;
+	background-color: hsl(240, 100%, 75%);
 }
 .nav__item:nth-of-type(7) {
-	--base-rotation: -6 * pi / 4;
+	--base-rotation: (pi / var(--item-spacing)) * 6;
+	background-color: hsl(240, 100%, 87.5%);
 }
 .nav__item:nth-of-type(8) {
-	--base-rotation: -7 * pi / 4;
+	--base-rotation: (pi / var(--item-spacing)) * 7;
+	background-color: hsl(240, 100%, 100%);
+}
+@keyframes rotation {
+	to {
+		rotate: 1turn;
+	}
 }
