@@ -10,14 +10,20 @@ body {
 	color-scheme: dark;
 	background: #121212;
 	color: #e0e0e0;
+	display: grid;
+	place-items: center;
+	min-height: 100vh;
+	min-height: 100dvh;
+}
+img {
+	max-width: 100%;
 }
 .navigation {
 	position: relative;
-	top: 300px;
-	left: 250px;
 	width: fit-content;
 	--burger-width: 50px;
 }
+
 /* Burger */
 .burger-cont {
 	width: var(--burger-width);
@@ -28,7 +34,6 @@ body {
 	position: relative;
 	z-index: 10;
 	border-radius: 8px;
-	/* border: 3px solid red; */
 }
 .burger-cont:focus-visible {
 	outline: none;
@@ -81,11 +86,17 @@ body {
 .burger--active .burger__line::after {
 	rotate: -45deg;
 }
+
 /* Nav items */
 .nav__item-cont {
+	visibility: hidden;
+}
+.burger--active ~ .nav__item-cont {
 	--item-count: 8;
 	--item-spacing: calc(var(--item-count) / 2);
-	--animation-duration: 60s;
+	--animation-duration: 45s;
+	--animation-delay: 1.5s;
+	visibility: visible;
 	width: 1px;
 	height: 1px;
 	position: absolute;
@@ -93,6 +104,7 @@ body {
 	left: 50%;
 	translate: -50% -50%;
 	animation: rotation var(--animation-duration) linear infinite;
+	animation-delay: var(--animation-delay);
 }
 .nav__item {
 	--item-width: 100px;
@@ -101,6 +113,8 @@ body {
 	aspect-ratio: 1;
 	display: grid;
 	place-items: center;
+	opacity: 0;
+	transition: opacity 0.5s;
 	transform-origin: center;
 	border-radius: 50%;
 	/* Initial position */
@@ -108,12 +122,16 @@ body {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	translate: 0 0;
+}
+.burger--active ~ .nav__item-cont .nav__item {
 	/* Position on circle */
 	translate: calc(var(--distance) * cos(var(--base-rotation)))
 		calc(var(--distance) * sin(var(--base-rotation)));
+	transition: translate 1s ease-in-out, opacity 1s ease-in-out 0.3s;
+	opacity: 1;
 }
 .nav__item a {
-	position: relative;
 	background-color: inherit;
 	text-decoration: none;
 	display: grid;
@@ -124,15 +142,16 @@ body {
 	transition: border-radius 0.2s ease;
 	border-radius: 50%;
 	animation: rotation var(--animation-duration) linear reverse infinite;
+	animation-delay: var(--animation-delay);
 }
 .nav__item a:is(:hover, :focus-visible) {
 	border-radius: 30%;
 }
 /* Stop the animation when items are hovered or focused */
 .nav__item-cont:has(.nav__item a:hover),
-.nav__item-cont:focus-within,
+.nav__item-cont:has(a:focus-visible),
 .nav__item-cont:has(.nav__item a:hover) a,
-.nav__item-cont:focus-within a {
+.nav__item-cont:has(a:focus-visible) a {
 	animation-play-state: paused;
 }
 /* Removes the rotation animation if the user has reduced-motion activated (accessibility setting)*/
@@ -144,39 +163,99 @@ body {
 }
 /* to do: remove backgrounds */
 .nav__item:nth-of-type(1) {
-	--base-rotation: 0;
-	background-color: hsl(240, 100%, 12.5%);
+	--base-rotation: (pi / var(--item-spacing)) * 0;
+	--color: hsl(358, 75%, 66%);
+	background-color: var(--color);
 }
 .nav__item:nth-of-type(2) {
 	--base-rotation: (pi / var(--item-spacing)) * 1;
-	background-color: hsl(240, 100%, 25%);
+	--color: hsl(206, 65%, 63%);
+	background-color: var(--color);
 }
 .nav__item:nth-of-type(3) {
 	--base-rotation: (pi / var(--item-spacing)) * 2;
-	background-color: hsl(240, 100%, 37.5%);
+	--color: hsl(70, 73%, 65%);
+	background-color: var(--color);
 }
 .nav__item:nth-of-type(4) {
 	--base-rotation: (pi / var(--item-spacing)) * 3;
-	background-color: hsl(240, 100%, 50%);
+	--color: hsl(146, 37%, 54%);
+	background-color: var(--color);
 }
 .nav__item:nth-of-type(5) {
 	--base-rotation: (pi / var(--item-spacing)) * 4;
-	background-color: hsl(240, 100%, 62.5%);
+	--color: hsl(335, 63%, 62%);
+	background-color: var(--color);
 }
 .nav__item:nth-of-type(6) {
 	--base-rotation: (pi / var(--item-spacing)) * 5;
-	background-color: hsl(240, 100%, 75%);
+	--color: hsl(53, 100%, 74%);
+	background-color: var(--color);
 }
 .nav__item:nth-of-type(7) {
 	--base-rotation: (pi / var(--item-spacing)) * 6;
-	background-color: hsl(240, 100%, 87.5%);
+	--color: hsl(236, 56%, 62%);
+	background-color: var(--color);
 }
 .nav__item:nth-of-type(8) {
 	--base-rotation: (pi / var(--item-spacing)) * 7;
-	background-color: hsl(240, 100%, 100%);
+	--color: hsl(139, 55%, 60%);
+	background-color: var(--color);
+}
+.burger--active ~ .nav__item-cont .nav__item:nth-of-type(1) {
+	transition-delay: 50ms;
+}
+.burger--active ~ .nav__item-cont .nav__item:nth-of-type(2) {
+	transition-delay: 100ms;
+}
+.burger--active ~ .nav__item-cont .nav__item:nth-of-type(3) {
+	transition-delay: 150ms;
+}
+.burger--active ~ .nav__item-cont .nav__item:nth-of-type(4) {
+	transition-delay: 200ms;
+}
+.burger--active ~ .nav__item-cont .nav__item:nth-of-type(5) {
+	transition-delay: 250ms;
+}
+.burger--active ~ .nav__item-cont .nav__item:nth-of-type(6) {
+	transition-delay: 300ms;
+}
+.burger--active ~ .nav__item-cont .nav__item:nth-of-type(7) {
+	transition-delay: 350ms;
+}
+.burger--active ~ .nav__item-cont .nav__item:nth-of-type(8) {
+	transition-delay: 400ms;
 }
 @keyframes rotation {
 	to {
 		rotate: 1turn;
 	}
+}
+/* Items content */
+.nav__content {
+	text-align: center;
+	display: grid;
+	place-items: center;
+	padding: 0.5rem;
+}
+.nav__content img {
+	width: 65%;
+	grid-row: 1;
+	grid-column: 1;
+	opacity: 0.8;
+	transition: 0.3s;
+}
+.nav__content:is(:hover, :focus-visible) img {
+	opacity: 0;
+}
+.nav__content p {
+	color: black;
+	font-size: 1.2rem;
+	grid-row: 1;
+	grid-column: 1;
+	opacity: 0;
+	transition: 0.2s;
+}
+.nav__content:is(:hover, :focus-visible) p {
+	opacity: 0.8;
 }

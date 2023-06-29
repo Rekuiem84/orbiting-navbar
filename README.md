@@ -10,6 +10,7 @@ Fifth project of [this challenge](https://github.com/Rekuiem84/personal-challeng
 
 CSS :
 
+- **prefers-reduced-motion** media query
 - **cos()** and **sin()** functions
 
 JS :
